@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.send("Hello to my API");
 });
-app.get("/GET", (req, res) => {
+app.get("/getall", (req, res) => {
     collection.find().toArray((err, items) => {
         res.json(items);
     });
@@ -33,6 +33,11 @@ app.get("/limitSkip/:limit/:skip", function (req, res) {
         .toArray((err, items) => {
             res.json(items);
         });
+});
+app.get("/getById/:id/", function (req, res) {
+    collection.findOne({ id: +req.params.id }, (err, item) => {
+        res.json(item);
+    });
 });
 const init = () => {
     mongo.connect(
