@@ -5,7 +5,7 @@ require("dotenv").config();
 const url = `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.USER}`;
 let databse;
 let collection;
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server running on port 3000");
 });
 
