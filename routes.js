@@ -12,13 +12,13 @@ router.get('/limitSkip/:limit/:skip', function (req, res) {
     });
 });
 
-router.get('getBookById/:id/', function (req, res) {
+router.get('/getBookById/:id', function (req, res) {
     database.getBookById(Number(req.params.id)).then(items => {
         res.json(items);
     });
 });
 
-router.get('/getReviewsByBookId/:id/', function (req, res) {
+router.get('/getReviewsByBookId/:id', function (req, res) {
     database.getReviewsByBookId(Number(req.params.id)).then(items => {
         res.json(items);
     });
