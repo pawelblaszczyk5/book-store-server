@@ -1,4 +1,4 @@
-const mongo = require("mongodb").MongoClient;
+const mongo = require('mongodb').MongoClient;
 let database;
 let booksCollection, reviewsCollection;
 
@@ -14,7 +14,7 @@ const init = () => {
                 console.error(err);
                 return;
             }
-            database = client.db(`${process.env.USER}`);
+            database = client.db(process.env.USER);
             booksCollection = database.collection('products');
             reviewsCollection = database.collection('reviews');
         }
