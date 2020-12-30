@@ -21,7 +21,7 @@ const init = () => {
     );
 };
 
-const getBooksLimitAndSkip = (limit, skip) => {
+const getLimitedBooks = (limit, skip) => {
     return new Promise((resolve) => {
         booksCollection
             .find()
@@ -33,7 +33,7 @@ const getBooksLimitAndSkip = (limit, skip) => {
     });
 };
 
-const getBookById = (idToSearch) => {
+const getBook = (idToSearch) => {
     return new Promise((resolve) => {
         booksCollection
             .findOne({id: idToSearch}, (err, item) => {
@@ -42,7 +42,7 @@ const getBookById = (idToSearch) => {
     })
 };
 
-const getReviewsByBookId = (idToSearch, limit, skip) => {
+const getLimitedReviews = (idToSearch, limit, skip) => {
     return new Promise((resolve) => {
         reviewsCollection
             .find({bookId: idToSearch})
@@ -54,14 +54,14 @@ const getReviewsByBookId = (idToSearch, limit, skip) => {
     })
 };
 
-const getNumberOfReviewsByBookId = (idToSearch) => {
+const getNumberOfReviews = (idToSearch) => {
     return new Promise((resolve) => {
         resolve(reviewsCollection.countDocuments({bookId: idToSearch}));
     });
 };
 
 module.exports.init = init;
-module.exports.getBooksLimitAndSkip = getBooksLimitAndSkip;
-module.exports.getBookById = getBookById;
-module.exports.getReviewsByBookId = getReviewsByBookId;
-module.exports.getNumberOfReviewsByBookId = getNumberOfReviewsByBookId;
+module.exports.getLimitedBooks = getLimitedBooks;
+module.exports.getBook = getBook;
+module.exports.getLimitedReviews = getLimitedReviews;
+module.exports.getNumberOfReviews = getNumberOfReviews;
