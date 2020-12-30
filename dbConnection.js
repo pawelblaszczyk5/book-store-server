@@ -56,7 +56,7 @@ const getReviewsByBookId = (idToSearch, limit, skip) => {
 
 const getNumberOfReviewsByBookId = (idToSearch) => {
     return new Promise((resolve) => {
-        resolve(reviewsCollection.count({bookId: idToSearch}));
+        resolve(reviewsCollection.countDocuments({bookId: idToSearch}));
     });
 };
 
