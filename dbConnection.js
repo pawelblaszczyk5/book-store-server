@@ -42,16 +42,26 @@ const getBookById = (idToSearch) => {
     })
 };
 
-const getReviewsByBookId = (idToSearch) => {
+const getReviewsByBookId = (idToSearch, limit, skip) => {
     return new Promise((resolve) => {
         reviewsCollection
-            .find({bookId: idToSearch}).toArray((err, item) => {
+            .find({bookId: idToSearch})
+            .limit(limit)
+            .skip(skip)
+            .toArray((err, item) => {
             resolve(item);
         });
     })
-}
+};
+
+const getNumberOfReviewsByBookId = (idToSearch) => {
+    return new Promise((resolve) => {
+        resolve(reviewsCollection.count({bookId: idToSearch}));
+    });
+};
 
 module.exports.init = init;
 module.exports.getBooksLimitAndSkip = getBooksLimitAndSkip;
 module.exports.getBookById = getBookById;
 module.exports.getReviewsByBookId = getReviewsByBookId;
+module.exports.getNumberOfReviewsByBookId = getNumberOfReviewsByBookId;
