@@ -49,8 +49,8 @@ const getLimitedReviews = (idToSearch, limit, skip) => {
             .limit(limit)
             .skip(skip)
             .toArray((err, item) => {
-            resolve(item);
-        });
+                resolve(item);
+            });
     })
 };
 
@@ -60,8 +60,19 @@ const getNumberOfReviews = (idToSearch) => {
     });
 };
 
+const getRecommendedBooks = () => {
+    return new Promise((resolve) => {
+        booksCollection
+            .aggregate([{$sample: {size: 8}}])
+            .toArray((err, item) => {
+                resolve(item);
+            })
+    });
+}
+
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
 module.exports.getBook = getBook;
 module.exports.getLimitedReviews = getLimitedReviews;
 module.exports.getNumberOfReviews = getNumberOfReviews;
+module.exports.getRecommendedBooks = getRecommendedBooks;

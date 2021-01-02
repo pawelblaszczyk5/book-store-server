@@ -30,4 +30,10 @@ router.get('/getNumberOfReviews/:id/', function (req, res) {
     });
 });
 
+router.get('/getRecommendedBooks/:id/', function (req, res) {
+    database.getRecommendedBooks(Number(req.params.id)).then(items => {
+        res.json(items);
+    });
+});
+
 module.exports = router;
