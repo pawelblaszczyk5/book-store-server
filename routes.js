@@ -6,32 +6,32 @@ router.get('/', (req, res) => {
     res.send('Hello to my API');
 });
 
-router.get('/getLimitedBooks/:limit/:skip', function (req, res) {
-    database.getLimitedBooks(Number(req.params.limit), Number(req.params.skip)).then(items => {
+router.get('/getLimitedBooks/', function (req, res) {
+    database.getLimitedBooks(Number(req.query.limit), Number(req.query.skip)).then(items => {
         res.json(items);
     });
 });
 
-router.get('/getBook/:id', function (req, res) {
-    database.getBook(Number(req.params.id)).then(items => {
+router.get('/getBook', function (req, res) {
+    database.getBook(Number(req.query.id)).then(items => {
         res.json(items);
     });
 });
 
-router.get('/getLimitedReviews/:id/:limit/:skip', function (req, res) {
-    database.getLimitedReviews(Number(req.params.id), Number(req.params.limit), Number(req.params.skip)).then(items => {
+router.get('/getLimitedReviews', function (req, res) {
+    database.getLimitedReviews(Number(req.query.id), Number(req.query.limit), Number(req.query.skip)).then(items => {
         res.json(items);
     });
 });
 
-router.get('/getNumberOfReviews/:id/', function (req, res) {
-    database.getNumberOfReviews(Number(req.params.id)).then(number => {
+router.get('/getNumberOfReviews', function (req, res) {
+    database.getNumberOfReviews(Number(req.query.id)).then(number => {
         res.json(number);
     });
 });
 
-router.get('/getRecommendedBooks/:id/', function (req, res) {
-    database.getRecommendedBooks(Number(req.params.id)).then(items => {
+router.get('/getRecommendedBooks', function (req, res) {
+    database.getRecommendedBooks(Number(req.query.id)).then(items => {
         res.json(items);
     });
 });
