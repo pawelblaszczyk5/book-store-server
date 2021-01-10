@@ -95,7 +95,7 @@ const getFilteredBooks = (filter) => {
     }
     let sortObject = {};
     if (filter.sortBy !== 'default') {
-        sortObject[filter.sortBy.name] = filter.sortBy.value === 'asc' ? 1 : -1;
+        sortObject[filter.sortBy.name] = filter.sortBy.direction === 'asc' ? 1 : -1;
     }
     sortObject._id = 1
     console.log(sortObject);
