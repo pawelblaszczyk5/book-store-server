@@ -98,7 +98,6 @@ const getFilteredBooks = (filter) => {
         sortObject[filter.sortBy.name] = filter.sortBy.direction === 'asc' ? 1 : -1;
     }
     sortObject._id = 1
-    console.log(sortObject);
     return new Promise((resolve) => {
         booksCollection
             .find(filterObject)
