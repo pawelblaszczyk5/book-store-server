@@ -39,7 +39,7 @@ router.get('/getRecommendedBooks', (req, res) => {
 router.post('/getBooksWithFilterPlaceholder', (req, res) => {
     database.getFilteredBooks(req.body).then(items => {
         res.json(items);
-    })
+    });
 });
 
 module.exports = router;
