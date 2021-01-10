@@ -6,12 +6,6 @@ router.get('/', (req, res) => {
     res.send('Hello to my API');
 });
 
-router.get('/getLimitedBooks/',(req, res) => {
-    database.getLimitedBooks(Number(req.query.limit), Number(req.query.skip)).then(items => {
-        res.json(items);
-    });
-});
-
 router.get('/getBook', (req, res) => {
     database.getBook(Number(req.query.id)).then(items => {
         res.json(items);
@@ -36,7 +30,7 @@ router.get('/getRecommendedBooks', (req, res) => {
     });
 });
 
-router.post('/getBooksWithFilterPlaceholder', (req, res) => {
+router.post('/getBooks', (req, res) => {
     database.getFilteredBooks(req.body).then(items => {
         res.json(items);
     });
