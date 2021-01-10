@@ -5,6 +5,8 @@ const routes = require('./routes')
 
 require("dotenv").config();
 
+app.use(express.json());
+
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server running on port 3000');
 });
