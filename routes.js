@@ -30,6 +30,24 @@ router.get('/getRecommendedBooks', (req, res) => {
     });
 });
 
+router.get('/getBestsellers', (req, res) => {
+    database.getBestsellers().then(items => {
+        res.json(items);
+    });
+});
+
+router.get('/getNew', (req, res) => {
+    database.getNew().then(items => {
+        res.json(items);
+    });
+});
+
+router.get('/getSales', (req, res) => {
+    database.getSales().then(items => {
+        res.json(items);
+    });
+});
+
 router.post('/getBooks', (req, res) => {
     database.getFilteredBooks(req.body).then(items => {
         res.json(items);

@@ -70,6 +70,37 @@ const getRecommendedBooks = () => {
     });
 };
 
+const getBestsellers = () => {
+    return new Promise((resolve) => {
+        booksCollection
+            .aggregate([{$match: {bestseller: true}},{$sample: {size: 8}}])
+            .toArray((err, item) => {
+                resolve(item);
+            })
+    });
+};
+
+const getNew = () => {
+    return new Promise((resolve) => {
+        booksCollection
+            .aggregate([{$match: {new: true}},{$sample: {size: 8}}])
+            .toArray((err, item) => {
+                resolve(item);
+            })
+    });
+};
+
+const getSales = () => {
+    return new Promise((resolve) => {
+        booksCollection
+            .aggregate([{$match: {discountedPrice: {$ne: null}}},{$sample: {size: 8}}])
+            .toArray((err, item) => {
+                resolve(item);
+            })
+    });
+};
+
+
 const getFilteredBooks = (filter) => {
     const filterObject = {}
     if (filter.searchPhrase) {
@@ -117,3 +148,6 @@ module.exports.getLimitedReviews = getLimitedReviews;
 module.exports.getNumberOfReviews = getNumberOfReviews;
 module.exports.getRecommendedBooks = getRecommendedBooks;
 module.exports.getFilteredBooks = getFilteredBooks;
+module.exports.getBestsellers = getBestsellers;
+module.exports.getSales = getSales;
+module.exports.getNew = getNew;
