@@ -54,4 +54,10 @@ router.post('/getBooks', (req, res) => {
     });
 });
 
+router.post('/sendContact', (req, res) => {
+   database.saveContact(req.body).then(status => {
+      res.json(status);
+   });
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const mongo = require('mongodb').MongoClient;
 let database;
-let booksCollection, reviewsCollection;
+let booksCollection, reviewsCollection, contactCollection;
 
 const init = () => {
     mongo.connect(
@@ -17,6 +17,7 @@ const init = () => {
             database = client.db(process.env.USER);
             booksCollection = database.collection('products');
             reviewsCollection = database.collection('reviews');
+            contactCollection = database.collection('contact');
         }
     );
 };
@@ -141,6 +142,14 @@ const getFilteredBooks = (filter) => {
     });
 }
 
+const saveContact = (contactData) => {
+    return new Promise((resolve) => {
+        contactCollection.insertOne(contactData,{}, (err, res) => {
+            resolve(res.insertedCount === 1);
+        })
+    });
+};
+
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
 module.exports.getBook = getBook;
@@ -151,3 +160,4 @@ module.exports.getFilteredBooks = getFilteredBooks;
 module.exports.getBestsellers = getBestsellers;
 module.exports.getSales = getSales;
 module.exports.getNew = getNew;
+module.exports.saveContact = saveContact;
