@@ -2,7 +2,7 @@ const mongo = require('mongodb');
 const auth = require('./auth');
 
 let database;
-let booksCollection, reviewsCollection, contactCollection, usersCollection;
+let booksCollection, reviewsCollection, contactCollection, usersCollection, ordersCollection;
 
 const init = () => {
   mongo.MongoClient.connect(
@@ -21,6 +21,7 @@ const init = () => {
       reviewsCollection = database.collection('reviews');
       contactCollection = database.collection('contact');
       usersCollection = database.collection('users');
+      ordersCollection = database.collection('orders');
     }
   );
 };
@@ -239,10 +240,11 @@ const userData = (jwtToken, userId) => {
             const userData = res[0];
             delete userData.password;
             reviewsCollection.find({userId: userId}).toArray((err, res) => {
-              if (res.length) {
-                userData.reviews = res;
-              }
-              resolve(userData);
+              userData.reviews = res.length ? res : [];
+              ordersCollection.find({userId: userId}).toArray((err, res) => {
+                userData.orders = res.length ? res : [];
+                resolve(userData);
+              })
             })
           }
         })
