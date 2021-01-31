@@ -104,5 +104,22 @@ router.post('/authenticate', (req, res) => {
   });
 });
 
+router.post('/userData', (req, res) => {
+  const {jwt, userId} = req.body;
+  database.userData(jwt, userId).then((response) => {
+    res.json(response);
+  }, () => {
+    res.json('error')
+  });
+});
+
+router.post('/getBooksByIds', (req, res) => {
+  const {ids} = req.body;
+  database.getBooksByIds(ids).then((response) => {
+    res.json(response);
+  }, () => {
+    res.json('error');
+  })
+});
 
 module.exports = router;

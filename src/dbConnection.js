@@ -228,6 +228,45 @@ const authenticate = (jwtToken, userId) => {
   });
 };
 
+const userData = (jwtToken, userId) => {
+  return new Promise((resolve, reject) => {
+    authenticate(jwtToken, userId).then((res) => {
+      if (res === true) {
+        usersCollection.find({_id: new mongo.ObjectID(userId)}).toArray((err, res) => {
+          if (err || res.length !== 1) {
+            reject(false);
+          } else {
+            const userData = res[0];
+            delete userData.password;
+            reviewsCollection.find({userId: userId}).toArray((err, res) => {
+              if (res.length) {
+                userData.reviews = res;
+              }
+              resolve(userData);
+            })
+          }
+        })
+      } else {
+        reject(false);
+      }
+    }, () => {
+      reject(false);
+    })
+  });
+}
+
+const getBooksByIds = (idsArr) => {
+  return new Promise((resolve, reject) => {
+    booksCollection.find({id: {$in: idsArr}}).toArray((err, res) => {
+      if (err) {
+        reject();
+      } else {
+        resolve(res);
+      }
+    })
+  });
+}
+
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
 module.exports.getBook = getBook;
@@ -243,3 +282,5 @@ module.exports.checkIfUserExists = checkIfUserExists;
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
 module.exports.authenticate = authenticate;
+module.exports.userData = userData;
+module.exports.getBooksByIds = getBooksByIds;
