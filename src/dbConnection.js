@@ -269,6 +269,27 @@ const getBooksByIds = (idsArr) => {
   });
 }
 
+const addReview = (review, jwtToken, userId) => {
+  return new Promise((resolve, reject) => {
+    authenticate(jwtToken, userId).then((res) => {
+      if (res === true) {
+        console.log('auth myknęło');
+        reviewsCollection.insertOne(review, {}, (err, res) => {
+          if (err) {
+            reject(false);
+          } else if (res.insertedCount === 1) {
+            resolve(true);
+          }
+        })
+      } else {
+        reject(false);
+      }
+    }, () => {
+      reject(false);
+    })
+  });
+}
+
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
 module.exports.getBook = getBook;
@@ -286,3 +307,4 @@ module.exports.loginUser = loginUser;
 module.exports.authenticate = authenticate;
 module.exports.userData = userData;
 module.exports.getBooksByIds = getBooksByIds;
+module.exports.addReview = addReview;

@@ -122,4 +122,17 @@ router.post('/getBooksByIds', (req, res) => {
   })
 });
 
+router.post('/addReview', (req, res) => {
+  if (req.body.review.rating > 0 && req.body.review.rating <=5 && req.body.review.reviewText.length >=50 && req.body.review.userId === req.body.userData.userId) {
+    database.addReview(req.body.review, req.body.userData.jwt, req.body.userData.userId).then((response) => {
+      res.json(response);
+    }, (err) => {
+      res.json(err);
+    });
+  } else {
+    res.json(false);
+  }
+
+});
+
 module.exports = router;
