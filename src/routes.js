@@ -72,21 +72,36 @@ router.post('/register', (req, res) => {
           res.json(errorStatus);
         });
       } else {
-        res.json('user exists');
+        res.json({
+          success: false,
+          message: 'user exists'
+        });
       }
     });
   } else {
-    res.json('validation errors');
+    res.json({
+      success: false,
+      message: 'validation error'
+    });
   }
 });
 
 router.post('/login', (req, res) => {
   const {email, password} = req.body;
-  database.loginUser(email, password).then((status) => {
-    res.json(status);
-  }, (errorStatus) => {
-    res.json(errorStatus);
-  })
+  database.loginUser(email, password).then((response) => {
+    res.json(response);
+  }, (response) => {
+    res.json(response);
+  });
+});
+
+router.post('/authenticate', (req, res) => {
+  const {jwt, userId} = req.body;
+  database.authenticate(jwt, userId).then((response) => {
+    res.json(response);
+  }, (response) => {
+    res.json(response);
+  });
 });
 
 

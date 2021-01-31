@@ -1,11 +1,11 @@
-const mongo = require('mongodb').MongoClient;
+const mongo = require('mongodb');
 const auth = require('./auth');
 
 let database;
 let booksCollection, reviewsCollection, contactCollection, usersCollection;
 
 const init = () => {
-  mongo.connect(
+  mongo.MongoClient.connect(
     `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.USER}`,
     {
       useNewUrlParser: true,
@@ -157,15 +157,21 @@ const registerUser = (email, password) => {
   return new Promise((resolve, reject) => {
     auth.hashPassword(password).then((hash) => {
       usersCollection.insertOne({email: email, password: hash}, {}, (err, res) => {
-        resolve(res.insertedCount === 1 ? 'registered' : 'register error');
+        resolve({
+          success: res.insertedCount === 1,
+          message: res.insertedCount === 1 ? 'registered' : 'unexpected error'
+        })
       });
     }, () => {
-      reject('hash error');
+      reject({
+        success: false,
+        message: 'unexpected error'
+      });
     })
   });
 };
 
-const checkIfUserExists = async(email) => {
+const checkIfUserExists = async (email) => {
   return await usersCollection.find({email: email}).count() === 0;
 };
 
@@ -173,17 +179,54 @@ const loginUser = (email, password) => {
   return new Promise((resolve) => {
     usersCollection.find({email: email}).toArray((err, res) => {
       if (res.length === 1) {
-        auth.comparePassword(password, res[0].password).then((res) => {
-          resolve(res ? 'success' : 'bad login');
-        }, (error) => {
-          resolve(error)
+        auth.comparePassword(password, res[0].password).then((success) => {
+          if (success) {
+            const jwtToken = auth.generateJWT({email: email, id: res[0]._id});
+            resolve({
+              success: true,
+              message: 'logged in',
+              data: {
+                jwt: jwtToken,
+                userId: res[0]._id
+              }
+            })
+          } else {
+            resolve({
+              success: false,
+              message: 'password error'
+            })
+          }
+        }, () => {
+          resolve({
+            success: false,
+            message: 'unexpected error'
+          })
         })
       } else {
-        resolve('error')
+        resolve({
+          success: false,
+          message: 'user does not exist'
+        })
       }
     });
   });
 }
+
+const authenticate = (jwtToken, userId) => {
+  return new Promise((resolve) => {
+    usersCollection.find({_id: new mongo.ObjectID(userId)}).toArray((err, res) => {
+      if (err || res.length !== 1) {
+        resolve(false);
+      } else {
+        auth.verifyJWT(jwtToken).then((response) => {
+          resolve(response.id === userId && res[0].email === response.email);
+        }, (err) => {
+          resolve(err);
+        });
+      }
+    });
+  });
+};
 
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
@@ -199,3 +242,4 @@ module.exports.saveContact = saveContact;
 module.exports.checkIfUserExists = checkIfUserExists;
 module.exports.registerUser = registerUser;
 module.exports.loginUser = loginUser;
+module.exports.authenticate = authenticate;
