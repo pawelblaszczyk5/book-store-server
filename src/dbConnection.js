@@ -157,7 +157,7 @@ const saveContact = (contactData) => {
 const registerUser = (email, password) => {
   return new Promise((resolve, reject) => {
     auth.hashPassword(password).then((hash) => {
-      usersCollection.insertOne({email: email, password: hash}, {}, (err, res) => {
+      usersCollection.insertOne({email: email, password: hash, createdAt: Date.now(), ordersSum: 0}, {}, (err, res) => {
         resolve({
           success: res.insertedCount === 1,
           message: res.insertedCount === 1 ? 'registered' : 'unexpected error'
@@ -273,7 +273,6 @@ const addReview = (review, jwtToken, userId) => {
   return new Promise((resolve, reject) => {
     authenticate(jwtToken, userId).then((res) => {
       if (res === true) {
-        console.log('auth myknęło');
         reviewsCollection.insertOne(review, {}, (err, res) => {
           if (err) {
             reject(false);
