@@ -273,13 +273,28 @@ const addReview = (review, jwtToken, userId) => {
   return new Promise((resolve, reject) => {
     authenticate(jwtToken, userId).then((res) => {
       if (res === true) {
-        reviewsCollection.insertOne(review, {}, (err, res) => {
-          if (err) {
+        ordersCollection.find({userId: userId}).toArray((err, res) => {
+          if (err || res.length === 0) {
             reject(false);
-          } else if (res.insertedCount === 1) {
-            resolve(true);
+          } else {
+            const products = [];
+            res.forEach((order) => {
+              products.push(...order.products);
+            });
+            if (products.some(product => product.id === review.bookId)) {
+              reviewsCollection.insertOne(review, {}, (err, res) => {
+                if (err) {
+                  reject(false);
+                } else if (res.insertedCount === 1) {
+                  resolve(true);
+                }
+              })
+            } else {
+              reject(false);
+            }
           }
-        })
+        });
+
       } else {
         reject(false);
       }
