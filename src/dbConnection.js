@@ -283,7 +283,6 @@ const addReview = (review, jwtToken, userId) => {
             });
             if (products.some(product => product.id === review.bookId)) {
               reviewsCollection.find({userId: userId, bookId: review.bookId}).toArray((err, res) => {
-                console.log(res);
                 if (err || res.length !== 0) {
                   reject(false);
                 } else {
