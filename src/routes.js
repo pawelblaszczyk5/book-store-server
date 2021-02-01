@@ -132,7 +132,10 @@ router.post('/addReview', (req, res) => {
   } else {
     res.json(false);
   }
+});
 
+router.post('/placeOrder', (req, res) => {
+  console.log(req.body);
 });
 
 module.exports = router;

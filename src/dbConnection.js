@@ -310,6 +310,28 @@ const addReview = (review, jwtToken, userId) => {
   });
 }
 
+const insertOrder = (order) => {
+
+}
+
+const placeOrder = (order, userData) => {
+  return new Promise((resolve, reject) => {
+    if (userData) {
+      authenticate(jwtToken, userId).then((res) => {
+        if (res === true) {
+          console.log(order)
+        } else {
+          reject(false);
+        }
+      }, () => {
+        reject(false);
+      })
+    } else {
+      console.log(order);
+    }
+  });
+}
+
 module.exports.init = init;
 module.exports.getLimitedBooks = getLimitedBooks;
 module.exports.getBook = getBook;
@@ -328,3 +350,4 @@ module.exports.authenticate = authenticate;
 module.exports.userData = userData;
 module.exports.getBooksByIds = getBooksByIds;
 module.exports.addReview = addReview;
+module.exports.placeOrder = placeOrder;
