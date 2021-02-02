@@ -324,7 +324,7 @@ const checkAndPlaceOrder = (cart, value, userId) => {
           reject(false);
         } else {
           const order = {
-            cart,
+            products: cart.products,
             time: Date.now(),
             value: price,
             userId: userId
