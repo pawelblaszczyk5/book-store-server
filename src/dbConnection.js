@@ -310,16 +310,51 @@ const addReview = (review, jwtToken, userId) => {
   });
 }
 
-const insertOrder = (order) => {
+const checkAndPlaceOrder = (cart, value, userId) => {
+  return new Promise((resolve, reject) => {
+    const ids = cart.products.map(product => product.id);
+    getBooksByIds(ids).then((res) => {
+      if (res.length !== ids.length) {
+        reject(false);
+      } else {
+        const price = res.reduce((acc, val) => {
+          return acc + (val.discountedPrice ?? val.price) * 100;
+        }, 0) / 100;
+        if (price !== value) {
+          reject(false);
+        } else {
+          const order = {
+            cart,
+            time: Date.now(),
+            value: price,
+            userId: userId
+          };
+          ordersCollection.insertOne(order, {}, (err, res) => {
+            if (err || res.insertedCount !== 1) {
+              reject(false);
+            } else {
+              resolve(true);
+            }
+          })
+        }
+      }
+    }, () => {
+      reject(false);
+    })
+  });
 
 }
 
-const placeOrder = (order, userData) => {
+const authOrder = (cart, value, userData) => {
   return new Promise((resolve, reject) => {
     if (userData) {
-      authenticate(jwtToken, userId).then((res) => {
+      authenticate(userData.jwt, userData.userId).then((res) => {
         if (res === true) {
-          console.log(order)
+          checkAndPlaceOrder(cart, value, userData.userId).then(() => {
+            resolve(true);
+          }, () => {
+            reject(false);
+          });
         } else {
           reject(false);
         }
@@ -327,7 +362,11 @@ const placeOrder = (order, userData) => {
         reject(false);
       })
     } else {
-      console.log(order);
+      checkAndPlaceOrder(cart, value, 'anonymous').then(() => {
+        resolve(true);
+      }, () => {
+        reject(false);
+      });
     }
   });
 }
@@ -350,4 +389,4 @@ module.exports.authenticate = authenticate;
 module.exports.userData = userData;
 module.exports.getBooksByIds = getBooksByIds;
 module.exports.addReview = addReview;
-module.exports.placeOrder = placeOrder;
+module.exports.authOrder = authOrder;

@@ -135,7 +135,11 @@ router.post('/addReview', (req, res) => {
 });
 
 router.post('/placeOrder', (req, res) => {
-  console.log(req.body);
+  database.authOrder(req.body.cart, req.body.value, req.body.userData).then(() => {
+    res.json(true);
+  }, () => {
+    res.json(false);
+  });
 });
 
 module.exports = router;
