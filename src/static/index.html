@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BookStore backend API</title>
+  <style>
+    * {
+      font-family: Arial, sans-serif;
+    }
+    body {
+      max-width: 1200px;
+      margin: 10px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Available endpoints</h1>
+  <h2>/</h2>
+  <p>Current endpoint</p>
+  <h2>GET /getBook?id=bookId</h2>
+  <p>Get single book by ID</p>
+  <h2>GET /getLimitedReviews?id=bookId&limit=number&skip=number</h2>
+  <p>Get reviews for given book ID, limit and skip by given number</p>
+  <h2>GET /getNumberOfReviews?id=bookId</h2>
+  <p>Get reviews number for given book ID</p>
+  <h2>GET /getRecommendedBooks</h2>
+  <p>Get random books</p>
+  <h2>GET /getBestsellers</h2>
+  <p>Get random bestsellers</p>
+  <h2>GET /getNew</h2>
+  <p>Get random new books</p>
+  <h2>GET /getSales</h2>
+  <p>Get random on sale books</p>
+  <h2>POST /getBooks</h2>
+  <p>Get books based on filter, example filter structure:</p>
+  <pre>
+    searchPhrase: string;
+    dateFrom: number;
+    dateTo: number;
+    genres: Array&lt;string&gt;;
+    sortBy: string;
+    sale: boolean;
+    bestseller: boolean;
+    new: boolean;
+  </pre>
+  <h2>POST /sendContact</h2>
+  <p>Send contact message</p>
+  <h2>POST /register</h2>
+  <p>Register user</p>
+  <h2>POST /login</h2>
+  <p>Login user</p>
+  <h2>POST /authenticate</h2>
+  <p>Check user credentials</p>
+  <h2>POST /userData</h2>
+  <p>Get user data after authentication</p>
+  <h2>POST /getBooksByIds</h2>
+  <p>Get books by array of IDs</p>
+  <h2>POST /addReview</h2>
+  <p>Add review if authenticated and bought book</p>
+  <h2>POST /placeOrder</h2>
+  <p>Place order</p>
+</body>
+</html>

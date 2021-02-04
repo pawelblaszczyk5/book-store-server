@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const database = require('./dbConnection');
 const helpers = require('./helpers');
+const path = require('path');
 
 router.get('/', (req, res) => {
-  res.send('Hello to my API');
+  res.sendFile(path.join(__dirname, '/static/index.html'));
 });
 
 router.get('/getBook', (req, res) => {
@@ -26,7 +27,7 @@ router.get('/getNumberOfReviews', function (req, res) {
 });
 
 router.get('/getRecommendedBooks', (req, res) => {
-  database.getRecommendedBooks(Number(req.query.id)).then(items => {
+  database.getRecommendedBooks().then(items => {
     res.json(items);
   });
 });
