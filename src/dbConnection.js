@@ -318,7 +318,7 @@ const checkAndPlaceOrder = (cart, value, userId) => {
         reject(false);
       } else {
         const price = res.reduce((acc, val) => {
-          return acc + (val.discountedPrice ?? val.price) * 100;
+          return acc + (val.discountedPrice ?? val.price) * 100 * cart.products.find((product) => product.id === val.id).qty;
         }, 0) / 100;
         if (price !== value) {
           reject(false);
