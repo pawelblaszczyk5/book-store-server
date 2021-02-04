@@ -25,6 +25,6 @@ There is a list of endpoints with example usage.
 - MongoDB
 - Express
 ## Contributing
-I am open for any advices and tips. Feel free to open an issue if something is fundamentally wrong or something like that.
+I am open for any advices and tips. Feel free to open an issue if you have any suggestion.
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
