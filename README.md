@@ -24,6 +24,7 @@ There is a list of endpoints with example usage.
 - Node.js
 - MongoDB
 - Express
+- Heroku Deployment
 ## Contributing
 I am open for any advices and tips. Feel free to open an issue if you have any suggestion.
 ## License
